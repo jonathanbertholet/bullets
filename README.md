@@ -80,7 +80,7 @@ We may update our Privacy Policy from time to time. Changes will be posted withi
 # Contact Us
 If you have any questions about this Privacy Policy, please contact us at:
 
-- **Email**: youremail@example.com
-- **GitHub**: [https://github.com/yourusername/bullet-extension](https://github.com/yourusername/bullet-extension)
+- **Email**: 
+jbappstore459@gmail.com
 
 By using the Bullet Extension, you agree to the collection and use of information in accordance with this Privacy Policy.
