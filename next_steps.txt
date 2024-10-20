@@ -1,0 +1,8 @@
+- add copy to clipboard button - DONE
+- improve styling, window size - DONE
+- drag popup 
+- follow mouse?
+- dark mode support 
+- add indentation
+- add html support 
+- openai custom key entry - DONE

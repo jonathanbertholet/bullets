@@ -1,0 +1,63 @@
+<!-- popup.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bullet Extension Settings</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 15px;
+      width: 300px;
+    }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color:rgb(51, 145, 51);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color:#339133;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #339133;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .message {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bullet</h1>
+  <p>Right click anywhere on the page, then click "Bullet" to summarize a page.</p>
+  <p>Your API key is and always will remain private.</p>
+  <p>In order to obtain an API key, visit OpenAI's website.</p>
+  <label for="apiKey">OpenAI API Key:</label>
+  <input type="text" id="apiKey" placeholder="Enter your OpenAI API Key" />
+  <button id="saveButton">Save</button>
+  <div class="message" id="message"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
