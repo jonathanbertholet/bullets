@@ -31,9 +31,7 @@ Bullet is a Chrome extension that allows you to quickly summarize web pages or s
 - After generating a summary, a popup will appear with the bullet points.
 - Click the Copy button at the bottom of the popup to copy the summary to your clipboard.
 
-## Screenshots
-
-## Privacy and Data Usage
+### Privacy and Data Usage
 - **User Data**: The extension does not collect or store any personal data from users.
 - **API Key Storage**: Your OpenAI API key is stored locally using Chrome's secure `chrome.storage.sync` API.
 - **Data Transmission**: Text content for summarization is sent to OpenAI's API servers securely over HTTPS. Please refer to the Privacy Policy section for more details.
