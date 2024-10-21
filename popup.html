@@ -4,60 +4,84 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Bullet Extension Settings</title>
+  <title>Bullets Extension Settings</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 15px;
-      width: 300px;
+      font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding-top:0px;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 10px;
+      width: 320px;
+      background-color: #f9f9f9;
+      color: #333;
     }
     h1 {
-      font-size: 18px;
+      font-size: 24px;
       margin-bottom: 15px;
-      color:rgb(51, 145, 51);
+      color: #339133;
+      display: flex;
+      align-items: center;
     }
-
+    h1 img {
+      height: 25px;
+      width: 25px;
+      margin-right: 10px;
+    }
     label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
-      color:#339133;
+      color: #339133;
     }
     input[type="text"] {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       font-size: 14px;
       margin-bottom: 15px;
       box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
     button {
       background-color: #339133;
       color: #fff;
       border: none;
-      padding: 8px 12px;
+      padding: 10px 16px;
       font-size: 14px;
       border-radius: 5px;
       cursor: pointer;
+      width: 100%;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #2b7a2b; /* Darker green on hover */
     }
     .message {
       margin-top: 10px;
       font-size: 14px;
     }
+    p {
+      margin-bottom: 10px;
+    }
+    a {
+      color: #339133;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>Bullet</h1>
-  <p>Right click anywhere on the page, then click "Bullet" to summarize a page.</p>
-  <p>Your API key is and always will remain private.</p>
-  <p>In order to obtain an API key, visit OpenAI's website.</p>
+  <h1><img src="icons/icon48.png" alt="Bullet Icon">Bullets</h1>
+  <p>Right-click, then choose "Bullet Page".</p>
+  <p>To obtain an API key, visit <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI's website</a>.</p>
   <label for="apiKey">OpenAI API Key:</label>
   <input type="text" id="apiKey" placeholder="Enter your OpenAI API Key" />
   <button id="saveButton">Save</button>
   <div class="message" id="message"></div>
-
+  <p>Your API key is and always will remain private.</p>
   <script src="popup.js"></script>
 </body>
 </html>
