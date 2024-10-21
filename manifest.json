@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Bullets",
-  "version": "1.0",
-  "description": "Summarize web the web into bullet points.",
+  "version": "1.1",
+  "description": "Summarize web the web into bullet points using your OpenAI API Key",
   "permissions": [
     "contextMenus",
     "activeTab",
@@ -29,5 +29,11 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     }
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/icon48.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
