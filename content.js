@@ -1,5 +1,3 @@
-// content.js
-
 console.log('Content script loaded.');
 
 // Inject CSS styles into the page
@@ -7,7 +5,9 @@ const style = document.createElement('style');
 style.textContent = `
 /* Popup container */
 .popup {
-    position: absolute;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
     width: 400px;
     max-height: 500px;
     background: #ffffff;
@@ -25,17 +25,6 @@ style.textContent = `
     flex-direction: column;
 }
 
-.popup::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 30px; /* Adjust to align the arrow */
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid #ffffff;
-    z-index: 999;
-}
-
 @keyframes fadeIn {
     to {
         opacity: 1;
@@ -48,6 +37,8 @@ style.textContent = `
 }
 
 .popup-title {
+    display: flex;
+    align-items: center;
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 8px;
@@ -56,12 +47,30 @@ style.textContent = `
     z-index: 1;
     padding-bottom: 5px;
     color: #339133;
+    cursor: move;
+    user-select: none;
+}
+
+.popup-title span {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.popup-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
 }
 
 .content {
     white-space: pre-wrap;
     overflow-y: auto;
     flex: 1;
+}
+
+.content span {
+    opacity: 0;
+    transition: opacity 0.9s;
 }
 
 .popup-actions {
@@ -86,25 +95,24 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-let lastSummarizedText = '';
-let lastSummary = '';
 let popupElement;
-let mouseX = 800;
-let mouseY = 800;
 
-// Listen for context menu events to capture mouse coordinates
-document.addEventListener('contextmenu', (event) => {
-  console.log('Context menu event detected.');
-  mouseX = event.pageX;
-  mouseY = event.pageY;
-});
+// Variable to accumulate the streaming content
+let accumulatedContent = '';
+
+// Variables for drag functionality
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let popupStartX = 0;
+let popupStartY = 0;
 
 // Listen for messages from background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Message received in content script:', request);
   if (request.action === 'summarizePage') {
     console.log('Summarizing page...');
-    let pageText = document.body.innerText;
+    let pageText = getCleanedPageText();
     summarizeText(pageText);
   } else if (request.action === 'summarizeSelection') {
     console.log('Summarizing selection...');
@@ -113,27 +121,108 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+// Function to get the cleaned page text
+function getCleanedPageText() {
+  // Clone the body to avoid modifying the actual page
+  const clonedBody = document.body.cloneNode(true);
+
+  // List of selectors to remove
+  const unwantedSelectors = 'header, nav, footer, aside, script, style, noscript';
+
+  // Remove unwanted elements from cloned body
+  clonedBody.querySelectorAll(unwantedSelectors).forEach(el => el.remove());
+
+  // Get the text content
+  return clonedBody.innerText.trim();
+}
+
 // Function to summarize text
 function summarizeText(text) {
   console.log('Summarize text called.');
   // Show loading popup
-  showPopup('Bulleting in progress');
+  showPopup('');
 
-  // Send text to background script
-  chrome.runtime.sendMessage({ action: 'callOpenAI', text: text }, (response) => {
-    console.log('Received response from background script:', response);
-    if (response && response.summary) {
-      lastSummary = response.summary;
-      // Update popup with summary
-      showPopup(response.summary);
-    } else if (response.error) {
-      console.error(response.error);
-      showPopup(`Error: ${response.error}`);
-    } else {
-      showPopup('An unexpected error occurred.');
+  // Reset accumulated content
+  accumulatedContent = '';
+
+  // Open a port to the background script
+  const port = chrome.runtime.connect({ name: 'openai' });
+
+  // Send the text over the port
+  port.postMessage({ action: 'callOpenAI', text: text });
+
+  // Listen for messages from the background script
+  port.onMessage.addListener(function(msg) {
+    if (msg.type === 'data') {
+      // Update popup with streaming data
+      updatePopup(msg.content);
+    } else if (msg.type === 'error') {
+      console.error(msg.error);
+      showPopup(`Error: ${msg.error}`);
+    } else if (msg.type === 'done') {
+      // Generate a new AI-based title
+      generateTitle(accumulatedContent);
+      // Close the port when done
+      port.disconnect();
     }
   });
 }
+
+// Function to generate title using AI
+function generateTitle(summary) {
+  console.log('Generating title.');
+  // Open a port to the background script
+  const port = chrome.runtime.connect({ name: 'openai' });
+
+  // Send the action and summary over the port
+  port.postMessage({ action: 'generateTitle', summary: summary });
+
+  // Listen for messages from the background script
+  port.onMessage.addListener(function(msg) {
+    if (msg.type === 'title') {
+      // Update the title with the generated title
+      if (popupElement) {
+        const titleTextSpan = popupElement.querySelector('.popup-title span');
+        // Fade out the placeholder title
+        titleTextSpan.style.opacity = 0;
+        // After fade-out, update the text and fade in
+        setTimeout(() => {
+          titleTextSpan.textContent = msg.title;
+          titleTextSpan.style.opacity = 1;
+        }, 500); // match the transition duration
+      }
+      port.disconnect();
+    } else if (msg.type === 'error') {
+      console.error(msg.error);
+      if (popupElement) {
+        const titleTextSpan = popupElement.querySelector('.popup-title span');
+        titleTextSpan.textContent = 'Error generating title';
+      }
+      port.disconnect();
+    }
+  });
+}
+
+// Function to update the popup with streaming data
+function updatePopup(newText) {
+  console.log('Updating popup.');
+  if (popupElement) {
+    const contentDiv = popupElement.querySelector('.content');
+    // Create a new span element for the new text
+    const span = document.createElement('span');
+    span.textContent = newText;
+    // Append the span to contentDiv
+    contentDiv.appendChild(span);
+    // Force reflow
+    span.offsetWidth;
+    // Apply fade-in effect
+    span.style.opacity = 1;
+
+    // Accumulate the content for later processing
+    accumulatedContent += newText;
+  }
+}
+
 // Function to show popup
 function showPopup(text) {
   console.log('Showing popup.');
@@ -145,13 +234,21 @@ function showPopup(text) {
   // Create popup element
   popupElement = document.createElement('div');
   popupElement.className = 'popup';
-  popupElement.style.top = (mouseY + 10) + 'px';
-  popupElement.style.left = (mouseX + 10) + 'px';
 
   // Create title div
   const titleDiv = document.createElement('div');
   titleDiv.className = 'popup-title';
-  titleDiv.textContent = 'Bullet';
+
+  // Create image element for the icon
+  const iconImg = document.createElement('img');
+  iconImg.src = chrome.runtime.getURL('icons/icon48.png');
+  iconImg.className = 'popup-icon';
+  titleDiv.appendChild(iconImg);
+
+  // Create span for the title text
+  const titleTextSpan = document.createElement('span');
+  titleTextSpan.textContent = 'Bullets';
+  titleDiv.appendChild(titleTextSpan);
 
   popupElement.appendChild(titleDiv);
 
@@ -159,24 +256,19 @@ function showPopup(text) {
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content';
 
-  // Set the textContent to display plaintext
-  contentDiv.textContent = text;
-
+  // Append contentDiv to popup
   popupElement.appendChild(contentDiv);
 
   // Add the actions section with "Copy" button
-  // Create actions container
   const actionsDiv = document.createElement('div');
   actionsDiv.className = 'popup-actions';
 
-  // Create copy button
   const copyButton = document.createElement('button');
   copyButton.textContent = 'Copy';
   copyButton.className = 'copy-button';
 
-  // Add click event listener to copy the summary text
   copyButton.addEventListener('click', () => {
-    navigator.clipboard.writeText(text).then(() => {
+    navigator.clipboard.writeText(contentDiv.textContent).then(() => {
       // Show feedback that it was copied
       copyButton.textContent = 'Copied!';
       setTimeout(() => {
@@ -195,30 +287,60 @@ function showPopup(text) {
 
   document.body.appendChild(popupElement);
 
-  // Adjust position if popup goes off-screen
-  requestAnimationFrame(() => {
-    const popupRect = popupElement.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+  // Drag functionality
+  titleDiv.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    // Get the initial mouse position
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    
+    // Get the current position of the popup
+    const rect = popupElement.getBoundingClientRect();
+    popupStartX = rect.left;
+    popupStartY = rect.top;
+    
+    // Change positioning to top and left
+    popupElement.style.bottom = '';
+    popupElement.style.right = '';
+    popupElement.style.top = popupStartY + 'px';
+    popupElement.style.left = popupStartX + 'px';
 
-    // Adjust if the popup goes beyond the right edge
-    if (popupRect.right > viewportWidth) {
-      const newLeft = viewportWidth - popupRect.width - 20; // 20px margin
+    // Prevent text selection
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+
+  function onMouseMove(e) {
+    if (isDragging) {
+      // Calculate the new position
+      const deltaX = e.clientX - dragStartX;
+      const deltaY = e.clientY - dragStartY;
+      const newLeft = popupStartX + deltaX;
+      const newTop = popupStartY + deltaY;
+      
+      // Set the new position
       popupElement.style.left = newLeft + 'px';
-    }
-
-    // Adjust if the popup goes beyond the bottom edge
-    if (popupRect.bottom > viewportHeight) {
-      const newTop = viewportHeight - popupRect.height - 20; // 20px margin
       popupElement.style.top = newTop + 'px';
     }
-  });
+  }
+
+  function onMouseUp(e) {
+    if (isDragging) {
+      isDragging = false;
+    }
+  }
 
   // Close popup when clicking outside
   document.addEventListener('mousedown', function onDocumentClick(event) {
-    if (!popupElement.contains(event.target)) {
-      popupElement.remove();
-      document.removeEventListener('mousedown', onDocumentClick);
+    // If clicking on the popup or dragging, do nothing
+    if (popupElement.contains(event.target) || isDragging) {
+      return;
     }
+    popupElement.remove();
+    document.removeEventListener('mousedown', onDocumentClick);
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
   });
 }
