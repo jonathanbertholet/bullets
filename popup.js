@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const apiKey = apiKeyInput.value.trim();
       if (apiKey) {
         chrome.storage.sync.set({ openaiApiKey: apiKey }, () => {
-          messageDiv.textContent = 'API Key saved successfully!';
+          messageDiv.textContent = 'API Key saved';
           setTimeout(() => {
             messageDiv.textContent = '';
           }, 3000);
