@@ -1,0 +1,381 @@
+<!-- popup.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bullets Extension</title>
+  <style>
+    body {
+      font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      padding-bottom: 5px;
+      width: 320px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      font-size: 24px;
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #339133;
+      display: flex;
+      align-items: center;
+    }
+    h1 img {
+      height: 25px;
+      width: 25px;
+      margin-right: 10px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      margin-top: 0;
+    }
+    p {
+      margin-bottom: 8px;
+    }
+    a {
+      color: #339133;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Dark mode styles */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1e1e1e;
+        color: #ccc;
+      }
+      h1 {
+        color: #4caf50;
+      }
+      a {
+        color: #4caf50;
+      }
+    }
+
+    .notes-container {
+      margin-top: 5px;
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      margin-bottom: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .note-item {
+      padding: 8px 12px;
+      margin-bottom: 5px;
+      background: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      border: 1px solid #ddd;
+    }
+
+    .note-item:hover {
+      background: #f5f5f5;
+    }
+
+    .note-title {
+      font-weight: 600;
+      color: #339133;
+    }
+
+    .note-date {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .delete-note {
+      float: right;
+      color: #ff4444;
+      cursor: pointer;
+      padding: 2px 6px;
+    }
+
+    .delete-note:hover {
+      background: #ffeeee;
+      border-radius: 3px;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      .note-item {
+        background: #2d2d2d;
+        border-color: #444;
+      }
+
+      .note-item:hover {
+        background: #3d3d3d;
+      }
+
+      .note-date {
+        color: #999;
+      }
+
+      .delete-note:hover {
+        background: #442222;
+      }
+    }
+
+    .total-time-saved {
+      background: #e8f5e8;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: #339133;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      .total-time-saved {
+        background: #1a2e1a;
+        color: #4caf50;
+      }
+    }
+
+    .reset-button {
+      float: right;
+      background: #ef7e7e;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 8px;
+      transition: background-color 0.2s;
+      margin-bottom:3px;
+    }
+
+    .reset-button:hover {
+      background: #dd3333;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      .reset-button {
+        background: #662222;
+      }
+      .reset-button:hover {
+        background: #883333;
+      }
+    }
+
+    .note-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+
+    .icon-container {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+    }
+
+    .icon {
+        cursor: pointer;
+        width: 14px;
+        height: 14px;
+        padding: 2px;
+        border-radius: 3px;
+        transition: all 0.2s ease;
+    }
+
+    .link-note {
+        color: #339133;
+    }
+
+    .delete-note {
+        color: #ff4444;
+    }
+
+    /* Updated hover effects */
+    .icon:hover {
+        transform: scale(1.1);
+    }
+
+    .delete-note:hover {
+        background-color: rgba(255, 68, 68, 0.1); /* Light red background */
+    }
+
+    .link-note:hover {
+        background-color: rgba(51, 145, 51, 0.1); /* Light green background */
+    }
+
+    /* Dark mode updates */
+    @media (prefers-color-scheme: dark) {
+        .link-note {
+            color: #4caf50;
+        }
+        
+        .delete-note {
+            color: #ff6666;
+        }
+        
+        .delete-note:hover {
+            background-color: rgba(255, 68, 68, 0.2); /* Darker red background */
+        }
+
+        .link-note:hover {
+            background-color: rgba(76, 175, 80, 0.2); /* Darker green background */
+        }
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 12px;
+      color: #737373;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: #339133;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      .search-box {
+        background: #2d2d2d;
+        border-color: #444;
+        color: #ccc;
+      }
+
+      .search-box:focus {
+        border-color: #4caf50;
+      }
+    }
+
+    /* Basic scrollbar styling */
+    .notes-container::-webkit-scrollbar {
+      width: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      transition: width 0.2s;
+    }
+
+    .notes-container:hover::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .notes-container:hover::-webkit-scrollbar-thumb {
+      background: #339133;
+      border-radius: 4px;
+      position: absolute;
+      right: 0;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      .notes-container:hover::-webkit-scrollbar-thumb {
+        background: #4caf50;
+      }
+    }
+
+.api-key-container {
+  position: relative;
+  width: 100%;
+}
+
+.api-key-input-container {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.api-key-field {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #339133;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fff;
+  color: #333;
+}
+
+.api-key-field:focus {
+  outline: none;
+  border-color: #2b7a2b;
+}
+
+.api-key-save {
+  padding: 8px 16px;
+  background: #339133;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.api-key-save:hover {
+  background: #2b7a2b;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .api-key-field {
+    background: #1a2e1a;
+    border-color: #4caf50;
+    color: #fff;
+  }
+  
+  .api-key-field:focus {
+    border-color: #45a049;
+  }
+  
+  .api-key-save {
+    background: #224a23;
+  }
+  
+  .api-key-save:hover {
+    background: #153816;
+  }
+}
+  </style>
+</head>
+<body>
+  <h1><img src="icons/icon48.png" alt="Bullet Icon">Bullets</h1>
+  <p>Right-click and select "Bullet Page" to get started.</p>
+  <input type="text" id="searchNotes" class="search-box" placeholder="Search notes, links & summaries">
+  <div class="notes-container">
+    <div id="notesList" class="notes-list">
+      <!-- Notes will be inserted here dynamically -->
+    </div>
+  </div>
+  <div class="total-time-saved">
+    Total time saved: <span id="totalTimeSaved">0</span> minutes
+    <button id="resetTime" class="reset-button">Reset</button>
+  </div>
+  <div class="api-key-section">
+    <div class="api-key-container">
+      <button id="setApiKey" class="api-key-button">Add my own API Key</button>
+      <div id="apiKeyInput" class="api-key-input-container" style="display: none;">
+        <input type="text" id="apiKeyField" class="api-key-field" placeholder="Enter API Key">
+        <button id="saveApiKey" class="api-key-save">Save</button>
+      </div>
+    </div>
+    <p class="api-instructions">Get a free API key at <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
+  </div>
+  <p>Open Source - <a href="https://github.com/jonathanbertholet/bullets" target="_blank">Github Link</a></p>
+  <script src="popup.js"></script>
+</body>
+</html>
+
