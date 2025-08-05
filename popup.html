@@ -349,6 +349,34 @@
     background: #153816;
   }
 }
+
+.api-key-button {
+  width: 100%;
+  padding: 8px 12px;
+  background: #339133;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  margin-bottom: 8px;
+}
+
+.api-key-button:hover {
+  background: #2b7a2b;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .api-key-button {
+    background: #224a23;
+  }
+  
+  .api-key-button:hover {
+    background: #153816;
+  }
+}
   </style>
 </head>
 <body>
@@ -372,7 +400,7 @@
         <button id="saveApiKey" class="api-key-save">Save</button>
       </div>
     </div>
-    <p class="api-instructions">Get a free API key at <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
+    <p class="api-instructions">Get a free API key at <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a> for unlimited use.</p>
   </div>
   <p>Open Source - <a href="https://github.com/jonathanbertholet/bullets" target="_blank">Github Link</a></p>
   <script src="popup.js"></script>

@@ -1,10 +1,12 @@
-/* Namespace all styles with bullets-ext prefix */
+/* ===================================================
+   GLOBAL POPUP STYLES
+=================================================== */
 .bullets-ext-popup {
     --min-width: 300px;
     --max-width: 800px;
     --min-height: 200px;
     --max-height: 800px;
-
+  
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -17,395 +19,229 @@
     background: rgba(255, 255, 255, 0.85) !important;
     backdrop-filter: blur(30px) saturate(200%);
     -webkit-backdrop-filter: blur(30px) saturate(200%);
-    padding-left: 20px;
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-bottom: 15px;
+    padding: 20px 20px 15px;
     border-radius: 10px;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.1),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
     z-index: 2147483647;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
     color: #333;
     line-height: 1.5;
     opacity: 0;
-    animation: bullets-ext-fadeIn 0.3s forwards;
+    animation: bullets-ext-fadeIn 0.3s ease-out forwards;
     display: flex;
     flex-direction: column;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-@keyframes bullets-ext-fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  }
+  
+  @keyframes bullets-ext-fadeIn {
     from {
-        opacity: 0;
-        transform: translateY(-10px);
+      opacity: 0;
+      transform: translateY(10px);
     }
-}
-
-.bullets-ext-popup .popup-title {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* ===================================================
+     TITLE BAR & PIN ICON
+  =================================================== */
+  .bullets-ext-popup .popup-title {
     display: flex;
-    align-items: flex-start;
-    font-size: 16px;
-    font-weight: bold;
+    align-items: center;
     position: relative;
     z-index: 1;
-    padding-bottom: 10px;
-    padding-left: 36px;
-    padding-right: 36px;
-    padding-top: 4px;
+    padding: 4px 4px;
+    margin-bottom: 6px;
     min-height: 34px;
     color: #339133;
     cursor: move;
     user-select: none;
-    background: transparent !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.bullets-ext-popup .popup-title .title-text {
-    opacity: 1;
-    transition: opacity 0.5s;
-    margin-top: 0px;
-    padding-top: 0px;
-}
-
-.bullets-ext-popup .popup-icon {
+    background-color: transparent !important;
+  }
+  
+  .bullets-ext-popup .popup-title .popup-icon {
     width: 24px;
     height: 24px;
     margin-right: 8px;
-    position: absolute;
-    top: 4px;
-    left: 0px;
-    color: #339133;
-    background-color: #339133 !important;
+    position: relative;
     border-radius: 50%;
-}
-
-/* Reset any conflicting styles */
-.bullets-ext-popup .pin-icon {
-    all: initial;
-    * {
-        all: unset;
-    }
-}
-
-/* Base styles */
-.bullets-ext-popup .pin-icon {
-    position: absolute;
-    top: 4px;
-    right: 0px;
-    cursor: pointer;
+    background-color: transparent;
+  }
+  
+  .bullets-ext-popup .popup-title .title-text {
+    flex: 1;
+    margin: 0 8px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-size: 15px;
+    font-weight: 600;
+    color: #339133;
+    margin-bottom: 0px;
+    width: 100%;
+    background-color: transparent !important;
+  }
+  
+  .bullets-ext-popup .popup-title .pin-icon {
     width: 24px;
     height: 24px;
+    position: relative;
     border-radius: 50%;
-    z-index: 10;
-}
-
-/* Background layer */
-.bullets-ext-popup .pin-icon::before {
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  
+  /* Pin icon states */
+  .bullets-ext-popup .popup-title .pin-icon::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #33913383 !important;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(51, 145, 51, 0.51);
     border-radius: 50%;
     z-index: 0;
-}
-
-/* Icon layer */
-.bullets-ext-popup .pin-icon[title="Pin"]::after {
+  }
+  .bullets-ext-popup .popup-title .pin-icon[title="Pin"]::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z'/%3E%3C/svg%3E");
     background-size: 14px 14px;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 1;
-}
-
-.bullets-ext-popup .pin-icon[title="Close"]::after {
+  }
+  .bullets-ext-popup .popup-title .pin-icon[title="Close"]::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'/%3E%3C/svg%3E");
     background-size: 14px 14px;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 1;
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .pin-icon::before {
-        background-color: #4CAF50 !important;
-    }
-}
-
-.bullets-ext-popup .content {
-    white-space: normal;
-    overflow-y: auto;
+  }
+  
+  /* ===================================================
+     CONTENT AREA (Tabbed Interface)
+  =================================================== */
+  .bullets-ext-popup .popup-content {
     flex: 1;
-    padding: 12px 0 5px 0;
+    display: flex;
+    flex-direction: column;
+    background: transparent !important;
+    overflow: hidden;
+  }
+  
+  .bullets-ext-popup .popup-content .tab-header {
+    display: flex;
+    border-bottom: 1px solid rgba(51, 145, 51, 0.1);
+  }
+  
+  .bullets-ext-popup .popup-content .tab-button {
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    border: none;
     font-size: 14px;
-    line-height: 1.4;
-    background-color: transparent;
-    opacity: 1 !important;
-}
-
-.bullets-ext-popup .content span {
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .bullets-ext-popup .popup-content .tab-button.active {
+    background: rgba(51, 145, 51, 0.1);
+    font-weight: bold;
+  }
+  
+  .bullets-ext-popup .popup-content .tab-panels {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  /* Each tab panel; default hidden except active */
+  .bullets-ext-popup .popup-content .tab-panel {
+    display: none;
+  }
+  
+  .bullets-ext-popup .popup-content .tab-panel.active {
     display: block;
-    opacity: 1;
-    transition: transform 0.3s;
-}
-
-.bullets-ext-popup .content span > * {
+  }
+  
+  .bullets-ext-popup .popup-content .tab-panel.summary.active {
     margin: 0;
     padding: 0;
-}
-
-.bullets-ext-popup .popup-actions {
+    background: none;
+  }
+  
+  /* ===================================================
+     ACTIONS SECTION (Buttons, Time Saved, etc.)
+  =================================================== */
+  .bullets-ext-popup .popup-actions {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 8px 0;
     flex-wrap: wrap;
-}
-
-.bullets-ext-popup .copy-button,
-.bullets-ext-popup .link-button,
-.bullets-ext-popup .save-button {
-    /* Keep existing styles */
+  }
+  
+  .bullets-ext-popup .copy-button,
+  .bullets-ext-popup .link-button,
+  .bullets-ext-popup .save-button {
     background: linear-gradient(135deg, #339133, #2b7a2b);
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 8px 12px;
+    padding: 8px 16px;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.3px;
-    
-    /* Improved shadow */
-    box-shadow: 
-        0 2px 4px rgba(51, 145, 51, 0.2),
-        0 1px 2px rgba(0, 0, 0, 0.1);
-    
-    /* Clean hover transition */
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Better alignment */
+    box-shadow: 0 2px 4px rgba(51, 145, 51, 0.2),
+                0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 36px;
+    min-width: 70px;
     height: 34px;
-    
-    /* Icon styles */
-    svg {
-        width: 16px;
-        height: 16px;
-        fill: currentColor;
-    }
-}
-
-.bullets-ext-popup .font-size-controls {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-right: 8px;
-    z-index: 10;
-}
-
-.bullets-ext-popup .font-size-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #339133;
-    color: #fff;
-    border: none;
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 0;
-    margin: 0 2px;
-    visibility: visible;
-    opacity: 1;
-    position: relative;
-    z-index: 1;
-}
-
-/* Hover states */
-.bullets-ext-popup .copy-button:hover,
-.bullets-ext-popup .link-button:hover,
-.bullets-ext-popup .save-button:hover {
+  }
+  
+  .bullets-ext-popup .copy-button:hover,
+  .bullets-ext-popup .link-button:hover,
+  .bullets-ext-popup .save-button:hover {
     background: linear-gradient(135deg, #2b7a2b, #236023);
-}
-
-/* Active states */
-.bullets-ext-popup .copy-button:active,
-.bullets-ext-popup .link-button:active,
-.bullets-ext-popup .save-button:active {
+    transform: translateY(-1px);
+  }
+  
+  .bullets-ext-popup .copy-button:active,
+  .bullets-ext-popup .link-button:active,
+  .bullets-ext-popup .save-button:active {
     transform: translateY(1px);
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .copy-button,
-    .bullets-ext-popup .link-button,
-    .bullets-ext-popup .save-button,
-    .bullets-ext-popup .font-size-button {
-        background-color: #224a23;
-    }
-
-    .bullets-ext-popup .copy-button:hover,
-    .bullets-ext-popup .link-button:hover,
-    .bullets-ext-popup .save-button:hover,
-    .bullets-ext-popup .font-size-button:hover {
-        background-color: #153816;
-    }
-}
-
-/* Time saved element - Modern, minimalist pill design with smooth transitions */
-.bullets-ext-popup .time-saved {
+  }
+  
+  /* Time saved "pill" styling */
+  .bullets-ext-popup .time-saved {
     margin-left: auto;
     font-size: 10px;
-    background: rgba(232, 232, 232, 0.8); /* Semi-transparent neutral background */
-    color: #666; /* Muted text color that matches the background tone */
+    background: rgba(232, 232, 232, 0.8);
+    color: #666;
     padding: 4px 12px;
     border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth, modern transition curve */
-}
-
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .time-saved {
-        color: #ccc;
-        background: rgba(232, 232, 232, 0.1);
-    }
-}
-
-/* Dark mode styles */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup {
-        background: rgba(30, 30, 30, 0.85) !important;
-        color: #ccc;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    .bullets-ext-popup .popup-title {
-        background: transparent;
-        color: #ccc;
-    }
-    .bullets-ext-popup .copy-button {
-        background-color: #224a23;
-    }
-    .bullets-ext-popup .copy-button:hover {
-        background-color: #153816;
-    }
-    .bullets-ext-popup .time-saved {
-        color: #ccc;
-    }
-    .bullets-ext-popup .pin-icon {
-        background-color: #339133;
-
-    }
-    .bullets-ext-popup .content {
-        background: transparent;
-        color: #ccc;
-    }
-}
-
-/* Section headers */
-.bullets-ext-popup .content h3 {
-    color: #339133;
-    font-size: 14px;
-    font-weight: 500;
-    margin: 16px 0 8px 0;
-    padding: 0;
-    line-height: 1.3;
-}
-
-.bullets-ext-popup .content h3:first-child {
-    margin-top: 0;
-}
-
-/* All lists */
-.bullets-ext-popup .content ul {
-    margin: 0 0 12px 0;
-    padding-left: 0;
-    list-style: none;
-    margin-bottom: 0px;
-}
-
-.bullets-ext-popup .content li {
-    position: relative;
-    padding: 3px 0 3px 24px;
-    margin: 0;
-    font-weight: 500;
-}
-
-.bullets-ext-popup .content li::before {
-    content: "•";
-    color: #339133;
-    position: absolute;
-    left: 8px;
-    font-size: 16px;
-    line-height: 1.4;
-}
-
-/* Remove default spacing */
-.bullets-ext-popup .content p, .bullets-ext-popup .content br {
-    display: none;
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .content h3 {
-        color: #d4d4d4;  /* Light off-white/greyish color */
-        border-bottom-color: rgba(76, 175, 80, 0.1);
-    }
-    
-    .bullets-ext-popup .popup-title {
-        color: #d4d4d4;  /* Match the h3 headers */
-    }
-    
-    .bullets-ext-popup .content h3:hover {
-        border-bottom-color: rgba(76, 175, 80, 0.3);
-    }
-}
-
-.bullets-ext-popup .resize-handle {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 15px;
-    height: 15px;
-    cursor: se-resize;
-    background: linear-gradient(135deg, transparent 50%, #339133 50%);
-}
-
-.bullets-ext-popup.resizing {
-    user-select: none;
-}
-
-.bullets-ext-popup .resize-handle-left {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: opacity 0.3s ease;
+    /* Center the time saved pill vertically in its container */
+    display: flex;
+    align-items: center;
+  }
+  .bullets-ext-popup .time-saved.updating {
+    opacity: 0;
+  }
+  
+  /* ===================================================
+     RESIZE & DRAG HANDLES
+  =================================================== */
+  .bullets-ext-popup .resize-handle-left {
     position: absolute;
     left: 0;
     top: 0;
@@ -413,9 +249,8 @@
     height: 100%;
     cursor: ew-resize;
     background: transparent;
-}
-
-.bullets-ext-popup .resize-handle-top {
+  }
+  .bullets-ext-popup .resize-handle-top {
     position: absolute;
     left: 0;
     top: 0;
@@ -423,9 +258,8 @@
     height: 4px;
     cursor: ns-resize;
     background: transparent;
-}
-
-.bullets-ext-popup .resize-handle-corner {
+  }
+  .bullets-ext-popup .resize-handle-corner {
     position: absolute;
     left: 0;
     top: 0;
@@ -433,88 +267,68 @@
     height: 15px;
     cursor: nw-resize;
     background: linear-gradient(315deg, transparent 50%, #339133 50%);
-}
-
-.bullets-ext-popup .resize-handle-left:hover,
-.bullets-ext-popup .resize-handle-top:hover {
-    background: rgba(51, 145, 51, 0.1);
-}
-
-.bullets-ext-popup.resizing {
-    user-select: none;
-    transition: none;
-}
-
-/* Update dark mode styles */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .resize-handle-corner {
-        background: linear-gradient(315deg, transparent 50%, #4CAF50 50%);
-    }
-    
-    .bullets-ext-popup .resize-handle-left:hover,
-    .bullets-ext-popup .resize-handle-top:hover {
-        background: rgba(76, 175, 80, 0.1);
-    }
-}
-
-/* Smooth transitions */
-.bullets-ext-popup {
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-/* Subtle hover effect */
-.bullets-ext-popup:hover {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    transform: translateY(-1px);
-}
-
-/* Improved scrollbar styling */
-.bullets-ext-popup .content {
+    transition: opacity 0.2s ease;
+  }
+  .bullets-ext-popup:hover .resize-handle-corner {
+    opacity: 1;
+  }
+  
+  /* ===================================================
+     SCROLLBAR STYLING (Content Area)
+  =================================================== */
+  .bullets-ext-popup .popup-content .tab-panels {
     scrollbar-width: thin;
     scrollbar-color: #339133 #f0f0f0;
-}
-
-.bullets-ext-popup .content::-webkit-scrollbar {
+  }
+  .bullets-ext-popup .popup-content .tab-panels::-webkit-scrollbar {
     width: 8px;
-}
-
-.bullets-ext-popup .content::-webkit-scrollbar-track {
+  }
+  .bullets-ext-popup .popup-content .tab-panels::-webkit-scrollbar-track {
     background: #f0f0f0;
     border-radius: 4px;
-}
-
-.bullets-ext-popup .content::-webkit-scrollbar-thumb {
+  }
+  .bullets-ext-popup .popup-content .tab-panels::-webkit-scrollbar-thumb {
     background: #339133;
     border-radius: 4px;
-}
-
-/* Improved button styling */
-.bullets-ext-popup .copy-button {
-    transition: all 0.2s ease;
+  }
+  
+  /* ===================================================
+     LIST & TEXT STYLES (Within Content)
+  =================================================== */
+  .bullets-ext-popup .content h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #339133;
+    padding: 8px 0;
+    margin: 16px 0 12px;
+    width: 100%;
+    border-bottom: 2px solid rgba(51, 145, 51, 0.1);
+    transition: border-bottom-color 0.2s ease;
+    box-sizing: border-box;
+  }
+  .bullets-ext-popup .content h3:hover {
+    border-bottom-color: rgba(51, 145, 51, 0.3);
+  }
+  .bullets-ext-popup .content ul {
+    margin: 0 0 12px;
+    padding-left: 0;
+    list-style: none;
+  }
+  .bullets-ext-popup .content li {
     position: relative;
-    overflow: hidden;
-}
-
-.bullets-ext-popup .copy-button:after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-}
-
-.bullets-ext-popup .copy-button:active:after {
-    width: 200px;
-    height: 200px;
-}
-
-/* Improved bullet points */
-.bullets-ext-popup .content li::before {
+    margin: 4px 0;
+    padding: 6px 8px 6px 28px;
+    border-radius: 6px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background: rgba(51, 145, 51, 0.05);
+    font-weight: 500;
+    opacity: 0;
+    animation: fadeInList 0.5s ease-in forwards;
+  }
+  .bullets-ext-popup .content li:hover {
+    background: rgba(51, 145, 51, 0.1);
+  }
+  .bullets-ext-popup .content li::before {
     content: "";
     position: absolute;
     left: 8px;
@@ -523,658 +337,103 @@
     height: 6px;
     background: #339133;
     border-radius: 50%;
-}
-
-/* Section headers with subtle underline */
-.bullets-ext-popup .content h3 {
-    position: relative;
-    padding-bottom: 8px;
-}
-
-.bullets-ext-popup .content h3::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: #339133;
-    transition: opacity 0.2s ease;
-}
-
-.bullets-ext-popup .content h3:hover::after {
-    opacity: 0.8;
-}
-
-/* Dark mode refinements */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup {
-        background: rgba(30, 30, 30, 0.85) !important;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .bullets-ext-popup .content::-webkit-scrollbar-track {
-        background: #2d2d2d;
-    }
-
-    .bullets-ext-popup .content::-webkit-scrollbar-thumb {
-        background: #4CAF50;
-    }
-    
-    .bullets-ext-popup:hover {
-        background: rgba(30, 30, 30, 0.85) !important;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-        border: 1px solid rgba(255,255,255,0.15);
-    }
-}
-
-/* Loading animation for title changes */
-.bullets-ext-popup .popup-title .title-text {
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.bullets-ext-popup .popup-title .title-text.loading {
-    opacity: 0;
-    transform: translateY(-5px);
-}
-
-/* Pin icon polish */
-.bullets-ext-popup .pin-icon {
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-/* Resize handle polish */
-.bullets-ext-popup .resize-handle-corner {
-    transition: opacity 0.2s ease;
-    opacity: 0.5;
-}
-
-.bullets-ext-popup:hover .resize-handle-corner {
-    opacity: 1;
-}
-
-/* Time saved animation */
-.bullets-ext-popup .time-saved {
-    transition: opacity 0.3s ease;
-}
-
-.bullets-ext-popup .time-saved.updating {
-    opacity: 0;
-}
-
-.bullets-ext-popup .save-button {
-    margin-left: 10px;
-}
-
-.bullets-ext-popup .notes-list {
-    margin-top: 20px;
-}
-
-.bullets-ext-popup .notes-list h2 {
-    color: #339133;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.bullets-ext-popup .notes-list ul {
-    list-style: none;
-    padding: 0;
-}
-
-.bullets-ext-popup .notes-list li {
-    padding: 8px 12px;
-    margin-bottom: 5px;
-    background: #f5f5f5;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.bullets-ext-popup .notes-list li:hover {
-    background: #e5e5e5;
-}
-
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .notes-list li {
-        background: #2d2d2d;
-    }
-    .bullets-ext-popup .notes-list li:hover {
-        background: #3d3d3d;
-    }
-}
-
-/* Add to the CSS styles section */
-.bullets-ext-popup .note-time-saved {
-  font-size: 12px;
-  color: #339133;
-  margin-top: 4px;
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  .bullets-ext-popup .note-time-saved {
-    color: #4CAF50;
   }
-}
-
-.bullets-ext-popup .link-button {
-    background-color: #339133;  /* Same as copy-button */
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-.bullets-ext-popup .link-button:hover {
-    background-color: #2b7a2b;  /* Same hover state as copy-button */
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .link-button {
-        background-color: #224a23;  /* Same as copy-button in dark mode */
+  
+  /* Hide default paragraph and line-break spacing */
+  .bullets-ext-popup .content p,
+  .bullets-ext-popup .content br {
+    display: none;
+  }
+  
+  /* ===================================================
+     DARK MODE ADJUSTMENTS
+  =================================================== */
+  @media (prefers-color-scheme: dark) {
+    .bullets-ext-popup {
+      background: rgba(30, 30, 30, 0.85) !important;
+      color: #ccc;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .bullets-ext-popup .link-button:hover {
-        background-color: #153816;  /* Same hover state as copy-button in dark mode */
-    }
-}
-
-/* Update dark mode styles for title */
-@media (prefers-color-scheme: dark) {
     .bullets-ext-popup .popup-title {
-        color: #4CAF50;
-        background: transparent;
+      color: #ccc;
     }
-    
-    .bullets-ext-popup .pin-icon {
-        background-color: transparent !important;
+    .bullets-ext-popup .popup-title .pin-icon {
+      background-color: #4CAF50;
     }
-}
-
-/* Update title and icon styles */
-.bullets-ext-popup .popup-title,
-.bullets-ext-popup .popup-icon,
-.bullets-ext-popup .pin-icon {
-    background-color: transparent !important;
-}
-
-/* Ensure the title container is also transparent */
-.bullets-ext-popup .popup-title {
-    display: flex;
-    align-items: flex-start;
-    font-size: 16px;
-    font-weight: bold;
-    position: relative;
-    z-index: 1;
-    padding-bottom: 8px;
-    padding-left: 36px;
-    padding-right: 36px;
-    padding-top: 4px;
-    min-height: 34px;
-    color: #339133;
-    cursor: move;
-    user-select: none;
-    background: transparent !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-/* Update pin icon to maintain its color but be transparent */
-.bullets-ext-popup .pin-icon {
-    position: absolute;
-    top: 4px;
-    right: 0px;
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    background-color: #339133 !important;
-    background-size: 12px 12px;
-    background-repeat: no-repeat;
-    background-position: center;
-    border: 0px;
-    border-radius: 50%;
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .popup-title,
-    .bullets-ext-popup .popup-icon,
-    .bullets-ext-popup .pin-icon {
-        background-color: transparent !important;
-        background: transparent !important;
-    }
-    
-    .bullets-ext-popup .pin-icon {
-        background-color: #4CAF50;
-    }
-}
-
-/* Ensure complete transparency for title and its container */
-.bullets-ext-popup .popup-title,
-.bullets-ext-popup .popup-title *,
-.bullets-ext-popup .title-text {
-    background: transparent !important;
-    background-color: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-/* Reset any potential background styles */
-.bullets-ext-popup .popup-title {
-    display: flex;
-    align-items: flex-start;
-    font-size: 16px;
-    font-weight: bold;
-    position: relative;
-    z-index: 1;
-    padding-bottom: 8px;
-    padding-left: 36px;
-    padding-right: 36px;
-    padding-top: 4px;
-    min-height: 34px;
-    color: #339133;
-    cursor: move;
-    user-select: none;
-    background: transparent !important;
-    background-image: none !important;
-    background-color: transparent !important;
-    -webkit-background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .popup-title,
-    .bullets-ext-popup .popup-title *,
-    .bullets-ext-popup .title-text {
-        background: transparent !important;
-        background-color: transparent !important;
-    }
-}
-
-/* Modern button styling */
-.bullets-ext-popup .copy-button,
-.bullets-ext-popup .link-button,
-.bullets-ext-popup .save-button {
-    /* Modern gradient background */
-    background: linear-gradient(135deg, #339133, #2b7a2b);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-    
-    /* Improved shadow */
-    box-shadow: 
-        0 2px 4px rgba(51, 145, 51, 0.2),
-        0 1px 2px rgba(0, 0, 0, 0.1);
-    
-    /* Clean hover transition */
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Better alignment */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 70px;
-    height: 34px;
-    
-    /* Prevent text selection */
-    user-select: none;
-    cursor: pointer;
-}
-
-/* Hover state */
-.bullets-ext-popup .copy-button:hover,
-.bullets-ext-popup .link-button:hover,
-.bullets-ext-popup .save-button:hover {
-    background: linear-gradient(135deg, #2b7a2b, #236023);
-    box-shadow: 
-        0 4px 8px rgba(51, 145, 51, 0.25),
-        0 2px 4px rgba(0, 0, 0, 0.15);
-    transform: translateY(-1px);
-}
-
-/* Active state */
-.bullets-ext-popup .copy-button:active,
-.bullets-ext-popup .link-button:active,
-.bullets-ext-popup .save-button:active {
-    transform: translateY(1px);
-    box-shadow: 
-        0 2px 4px rgba(51, 145, 51, 0.15),
-        0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
     .bullets-ext-popup .copy-button,
     .bullets-ext-popup .link-button,
     .bullets-ext-popup .save-button {
-        background: linear-gradient(135deg, #2b7a2b, #1e5e1e);
-        box-shadow: 
-            0 2px 4px rgba(0, 0, 0, 0.2),
-            0 1px 2px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #2b7a2b, #1e5e1e);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2),
+                  0 1px 2px rgba(0,0,0,0.1);
     }
-
     .bullets-ext-popup .copy-button:hover,
     .bullets-ext-popup .link-button:hover,
     .bullets-ext-popup .save-button:hover {
-        background: linear-gradient(135deg, #236023, #184d18);
-        box-shadow: 
-            0 4px 8px rgba(0, 0, 0, 0.3),
-            0 2px 4px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, #236023, #184d18);
     }
-}
-
-/* Enhanced list items - removed transform effects */
-.bullets-ext-popup .content li {
-    margin: 4px 0;
-    padding: 6px 8px 6px 28px;
-    border-radius: 6px;
-    transition: background-color 0.2s ease;
-    background: rgba(51, 145, 51, 0.05);
-    font-weight: 500;
-}
-
-.bullets-ext-popup .content li:hover {
-    background: rgba(51, 145, 51, 0.1);
-}
-
-/* Enhanced section headers with consistent alignment */
-.bullets-ext-popup .content h3 {
-    font-size: 15px;
-    font-weight: 600;
-    color: #339133;
-    padding: 8px 0;
-    margin: 16px 0 12px 0;
-    width: 100%;  /* Ensure full width */
-    position: relative;  /* For consistent border positioning */
-    border-bottom: 2px solid rgba(51, 145, 51, 0.1);
-    transition: border-bottom-color 0.2s ease;
-    display: block;  /* Ensure block-level alignment */
-    box-sizing: border-box;  /* Include padding in width calculation */
-}
-
-.bullets-ext-popup .content h3:hover {
-    border-bottom-color: rgba(51, 145, 51, 0.3);
-}
-
-/* Remove any potential interference from parent elements */
-.bullets-ext-popup .content {
-    padding: 5px 10px;  /* Add consistent horizontal padding */
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
+    .bullets-ext-popup .time-saved {
+      color: #ccc;
+      background: rgba(232, 232, 232, 0.1);
+    }
+    .bullets-ext-popup .popup-content .tab-panels::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .bullets-ext-popup .popup-content .tab-panels::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #4CAF50, #388E3C);
+    }
     .bullets-ext-popup .content h3 {
-        color: #fff;
-        border-bottom-color: rgba(76, 175, 80, 0.1);
+      color: #fff;
+      border-bottom-color: rgba(76, 175, 80, 0.1);
     }
-    
-    .bullets-ext-popup .popup-title {
-        color: #fff;
-    }
-    
     .bullets-ext-popup .content h3:hover {
-        border-bottom-color: rgba(76, 175, 80, 0.3);
+      border-bottom-color: rgba(76, 175, 80, 0.3);
     }
-}
-
-/* Improved scrollbar */
-.bullets-ext-popup .content::-webkit-scrollbar {
-    width: 6px;
-}
-
-.bullets-ext-popup .content::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #339133, #2b7a2b);
-    border-radius: 3px;
-}
-
-/* Dark mode enhancements */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup {
-        background: rgba(30, 30, 30, 0.8) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.2),
-            inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-    }
-
-    .bullets-ext-popup .content li {
-        background: rgba(76, 175, 80, 0.05);
-        color: #d4d4d4;
-    }
-
-    .bullets-ext-popup .content li:hover {
-        background: rgba(76, 175, 80, 0.1);
-    }
-    
-    .bullets-ext-popup .content::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #4CAF50, #388E3C);
-    }
-}
-
-/* Smooth animations for content */
-.bullets-ext-popup .content span {
-    animation: slideIn 0.3s ease forwards;
-    opacity: 0;
-    transform: translateY(10px);
-}
-
-@keyframes slideIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Font size control styles */
-.bullets-ext-popup .font-size-controls {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-right: 8px;
-}
-
-.bullets-ext-popup .font-size-button {
-    background-color: #339133;
-    color: #fff;
-    border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 0;
-}
-
-.bullets-ext-popup .font-size-button:hover {
-    background-color: #2b7a2b;
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
     .bullets-ext-popup .font-size-button {
-        background-color: #224a23;
+      background-color: #224a23;
     }
     .bullets-ext-popup .font-size-button:hover {
-        background-color: #153816;
+      background-color: #153816;
     }
-}
-
-.bullets-ext-popup .copy-button,
-.bullets-ext-popup .link-button,
-.bullets-ext-popup .save-button {
-    transform: translateY(0);
-    transition: transform 0.1s ease, background-color 0.2s ease;
-}
-
-.bullets-ext-popup .copy-button:active,
-.bullets-ext-popup .link-button:active,
-.bullets-ext-popup .save-button:active {
-    transform: translateY(2px);
-}
-
-.bullets-ext-popup:hover {
-    background: rgba(255, 255, 255, 0.95);
-}
-
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup:hover {
-        background: rgba(30, 30, 30, 0.95);
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .content::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05);  /* Slightly visible track */
-    }
-    
-    .bullets-ext-popup .content::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #4CAF50, #388E3C);  /* Gradient thumb */
-        border-radius: 4px;
-    }
-    
-    .bullets-ext-popup .content::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(to bottom, #45a049, #357935);  /* Darker on hover */
-    }
-}
-
-/* Fix button sizing issues */
-.bullets-ext-popup .copy-button,
-.bullets-ext-popup .link-button,
-.bullets-ext-popup .save-button {
-    min-width: 60px; /* Ensure minimum width */
-    padding: 8px 16px;
-    position: relative;
-    transition: background-color 0.2s ease;
-    transform: none !important; /* Prevent transform from affecting size */
-}
-
-/* Remove any width modifications from click handlers */
-.bullets-ext-popup .copy-button:active,
-.bullets-ext-popup .link-button:active,
-.bullets-ext-popup .save-button:active {
-    transform: translateY(1px);
-}
-
-/* Ensure consistent button text positioning */
-.bullets-ext-popup .copy-button span,
-.bullets-ext-popup .link-button span,
-.bullets-ext-popup .save-button span {
-    position: relative;
-    display: inline-block;
-}
-
-/* Font size controls - Simplified styling */
-.bullets-ext-popup .font-size-controls {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-right: 8px;
-}
-
-.bullets-ext-popup .font-size-button {
-    background-color: #339133;
-    color: #fff;
-    border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 0;
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup .font-size-button {
-        background-color: #224a23;
-    }
-    
-    .bullets-ext-popup .font-size-button:hover {
-        background-color: #153816;
-    }
-}
-
-/* Ensure proper spacing and alignment in actions div */
-.bullets-ext-popup .popup-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 0;
-}
-
-.bullets-ext-popup .save-button {
-  background-color: #339133;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  min-width: 70px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease;
-}
-
-.bullets-ext-popup .save-button:hover {
-  background-color: #2b7a2b;
-}
-
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  .bullets-ext-popup .save-button {
-    background-color: #224a23;
   }
-
-  .bullets-ext-popup .save-button:hover {
-    background-color: #153816;
-  }
-}
-
-/* Remove all hover effects that might affect opacity */
-.bullets-ext-popup:hover {
+  
+  /* ===================================================
+     HOVER & ACTIVE STATES
+  =================================================== */
+  .bullets-ext-popup:hover {
     box-shadow: 0 8px 25px rgba(0,0,0,0.25);
     transform: translateY(-1px);
-}
-
-/* Add specific dark mode hover state */
-@media (prefers-color-scheme: dark) {
-    .bullets-ext-popup:hover {
-        background: rgba(30, 30, 30, 0.85) !important;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-        border: 1px solid rgba(255,255,255,0.15);
-    }
-}
-
-/* Remove any transitions that might include opacity */
-.bullets-ext-popup,
-.bullets-ext-popup * {
+  }
+  .bullets-ext-popup .copy-button:active,
+  .bullets-ext-popup .link-button:active,
+  .bullets-ext-popup .save-button:active {
+    transform: translateY(1px);
+  }
+  
+  /* ===================================================
+     MISCELLANEOUS OVERRIDES
+  =================================================== */
+  .bullets-ext-popup,
+  .bullets-ext-popup * {
     transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-/* Ensure content opacity stays constant */
-.bullets-ext-popup .content,
-.bullets-ext-popup .content * {
+  }
+  .bullets-ext-popup .content,
+  .bullets-ext-popup .content * {
     opacity: 1 !important;
-}
-
+  }
+  
+  .fade-in {
+    /* This animation will make the list items fade in from 0% to 100% opacity */
+    animation: fadeInList 0.5s ease-in forwards;
+  }
+  
+  @keyframes fadeInList {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
