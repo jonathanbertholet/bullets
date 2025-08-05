@@ -418,9 +418,10 @@
   .bullets-ext-popup * {
     transition: box-shadow 0.2s ease, transform 0.2s ease;
   }
-  .bullets-ext-popup .content,
-  .bullets-ext-popup .content * {
-    opacity: 1 !important;
+  /* Allow list items and the streaming wrapper to animate */
+  .bullets-ext-popup .content:not(.no-fade),
+  .bullets-ext-popup .content:not(.no-fade) > :not(li):not(span) {
+      opacity: 1 !important;
   }
   
   .fade-in {
