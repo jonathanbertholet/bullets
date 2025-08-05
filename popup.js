@@ -171,10 +171,11 @@ function handleSetApiKey() {
   button.style.display = 'none';
   inputContainer.style.display = 'flex';
   
-  // If there's an existing API key, show it in the input
+  // Never reveal the saved key; just provide a placeholder
+  apiKeyField.value = '';
   chrome.storage.local.get(['customApiKey'], (data) => {
     if (data.customApiKey) {
-      apiKeyField.value = data.customApiKey;
+      apiKeyField.placeholder = 'Existing key set — enter a new one to replace';
     }
   });
 
